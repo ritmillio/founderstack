@@ -8,6 +8,12 @@
   uv/pip caches. Dry run until `--apply`; skips any checkout holding a live dev
   process's cwd and all Rust targets while cargo runs. Worktrees, model caches,
   Docker and Downloads only on an explicit pick.
+- `notion-worklog`: record every piece of agent work in Notion — task per unit
+  of work, finding rows + a summary page per QA pass, a doc row linking repo
+  plans, decisions, incidents — with an append-only dated work-log entry. Reads
+  database ids and property names from `.agents/notion-worklog.json` in the host
+  repo; own records written directly, derived edits proposed first; no connector
+  means a `## Notion (pending)` entry, never a false claim.
 - `worktree-janitor`: census every worktree of a repo in one table — uncommitted,
   unpushed, commit age, PR state from a single `gh` call, the dev server whose cwd
   is inside it, a live relay — with a SAFE / ASK / KEEP verdict. `prune.sh` is a
