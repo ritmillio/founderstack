@@ -114,6 +114,12 @@
       "source": "./skills/productivity/notion-worklog",
       "description": "Record every piece of agent work in Notion before calling it done: code, fixes, QA passes (finding rows + summary page), research and plans (doc row linking the repo file), rulings, incidents and long runs, each with a dated work-log entry (did / why / verified / links / open). Targets come from a config file in the host repo. Use at the end of any task that changed or found something, or when the user says 'log this', 'document this in Notion', 'record what we did'.",
       "version": "0.1.0"
+    },
+    {
+      "name": "model-router",
+      "source": "./skills/productivity/model-router",
+      "description": "Pick the cheapest model and effort that can do a task well, BEFORE doing it or spawning agents. Cheap probe (max 3 tool calls), five-axis score, a one-line route card (model + effort + delegate or not) for the main session, each subagent and each workflow agent. Use at the start of any non-trivial task, before spawning subagents, or when the user says 'which model', 'what effort', 'save tokens', 'don't burn tokens'.",
+      "version": "0.1.0"
     }
   ]
 }
