@@ -1,6 +1,6 @@
 ---
 name: pr-fold
-description: Fold several open PR branches into an integration or release branch: dry run for conflicts and migration prefix collisions, merge in a detached worktree, resolve with both sides' intent, gate what the fold touched, put cross-PR breakage in one seams commit, push the integration branch. Never a protected branch, never a GitHub merge. Use when the user says "fold #N into ...", "put these PRs on the release branch", or "one release PR with all open PRs".
+description: "Fold several open PR branches into an integration or release branch: dry run for conflicts and migration prefix collisions, merge in a detached worktree, resolve with both sides' intent, gate what the fold touched, put cross-PR breakage in one seams commit, push the integration branch. Never a protected branch, never a GitHub merge. Use when the user says \"fold #N into ...\", \"put these PRs on the release branch\", or \"one release PR with all open PRs\"."
 ---
 
 # /pr-fold: many PRs, one integration branch, still green
@@ -12,8 +12,9 @@ migrations took the same number.
 
 ## Hard stops
 
-- The target is never a protected branch: `main`, `master`, `staging`,
-  `development`, `production`, plus whatever `.agents/founderstack.md` lists.
+- The target is never a protected branch: the repo's default branch, `main`,
+  `master`, `staging`, `development`, `production`, plus whatever
+  `.agents/founderstack.md` lists under `branches:`.
   `fold.sh` refuses them, and so do you.
 - Never merge a PR on GitHub (no `gh pr merge`, no merge button, no API call),
   not even into the integration branch. A fold is a local `git merge` and a
@@ -37,7 +38,9 @@ migrations took the same number.
    ```bash
    bash "$SKILL_DIR/scripts/fold.sh" --into release/1.4 [--migrations db/migrations] 601 586
    ```
-   Exit 0 clean, 1 conflict, 2 migration prefix collision, 3 both.
+   Exit 0 clean, 1 conflict, 2 migration prefix collision, 3 both, 4 refused
+   or failed (read the message). Pass `--migrations <dir>` when the repo has
+   numbered SQL migrations; without it, prefixes are not checked.
 3. **Migration prefixes first.** Two PRs adding the same `NNNN_` prefix, or a
    PR adding a prefix the target already has, get renumbered during the fold.
    A migration renamed after it ran anywhere counts as a different migration.

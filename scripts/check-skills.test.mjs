@@ -6,8 +6,9 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const CHECK = join(dirname(new URL(import.meta.url).pathname), "check-skills.mjs");
+const CHECK = join(dirname(fileURLToPath(import.meta.url)), "check-skills.mjs");
 let failed = 0;
 
 function tree(mutate = () => {}) {
@@ -62,6 +63,8 @@ function expect(label, mutate, wantFail, needle, env) {
 
 expect("clean tree passes", () => {}, false);
 expect("name differs from folder", (f) => (f["skills/engineering/alpha/SKILL.md"] = "---\nname: beta\ndescription: Use when x.\n---\n"), true, "must equal the folder name");
+expect("unquoted description with ': '", (f) => (f["skills/engineering/alpha/SKILL.md"] = "---\nname: alpha\ndescription: Does alpha: fast. Use when x.\n---\n"), true, "not valid YAML as written");
+expect("quoted description with ': ' passes", (f) => (f["skills/engineering/alpha/SKILL.md"] = '---\nname: alpha\ndescription: "Does alpha: fast. Use when \\"x\\"."\n---\n'), false);
 expect("description without a trigger", (f) => (f["skills/engineering/alpha/SKILL.md"] = "---\nname: alpha\ndescription: Does alpha.\n---\n"), true, "must say when to use it");
 expect("missing from root plugin.json", (f) => (f[".claude-plugin/plugin.json"] = JSON.stringify({ name: "stack", version: "1.0.0", skills: ["./skills/engineering/founder-mode"] })), true, "skills array is missing ./skills/engineering/alpha");
 expect("marketplace version drift", (f) => (f["skills/engineering/alpha/.claude-plugin/plugin.json"] = JSON.stringify({ name: "alpha", version: "0.2.0" })), true, "alpha version 0.1.0 != its plugin.json 0.2.0");

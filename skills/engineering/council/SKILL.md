@@ -1,6 +1,6 @@
 ---
 name: council
-description: Get a change reviewed by several models from different vendors, in rounds, until they agree or the budget ends: stable finding ids, blocker/should/nit judged against the stated intent, fixes between rounds, a score table in the PR body. Without other vendors it runs fresh reviewers with different lenses and says so. Use when the user says "council", "second opinion", "cross-review this", or before shipping a risky change (data, money, auth, security, public API).
+description: "Get a change reviewed by several models from different vendors, in rounds, until they agree or the budget ends: stable finding ids, blocker/should/nit judged against the stated intent, fixes between rounds, a score table in the PR body. Without other vendors it runs fresh reviewers with different lenses and says so. Use when the user says \"council\", \"second opinion\", \"cross-review this\", or before shipping a risky change (data, money, auth, security, public API)."
 ---
 
 # /council: reviewers who did not write it, and do not think alike
@@ -44,8 +44,9 @@ budget runs out. Running out of budget is not approval.
 4. **Triage as results arrive.** Give each distinct finding a stable id (F1,
    F2, ...) in a ledger, merge duplicates across seats, and drop findings that
    come with no evidence. Verify every blocker yourself before you act on it.
-5. **Fix between rounds.** Fix the blockers and the shoulds you accept, in new
-   commits. If a fix grew the diff beyond the intent, cut it back first.
+5. **Fix between rounds.** On your own branch, fix the blockers and the shoulds
+   you accept, in new commits. On someone else's branch, change nothing: give
+   the author the ledger, and run the next round when they push. If a fix grew the diff beyond the intent, cut it back first.
    Decline a finding only with a written reason.
 6. **Next round** with the same seats, on the new head, with the ledger. Ask
    each seat to confirm or reopen each finding by id. Budget: 3 rounds, 5 for

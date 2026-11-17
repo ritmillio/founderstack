@@ -17,8 +17,8 @@ list has to be earned, not assumed. The founder reads this line first.
 
 **Red before green.** *When:* a bug.
 Before any hypothesis, get one command that fails on this bug, fails every
-time, and runs in seconds. Commit it with the fix so the fix is proven by the
-same command going green.
+time, and runs in seconds. Commit it before or with the fix, so the fix is
+proven by the same command going green.
 
 **Name the violated assumption.** *When:* you have found a cause.
 The cause is the assumption that turned out false, not the line that crashed.
@@ -69,8 +69,9 @@ filler.
 ## Safety
 
 **Hard stops.** *Always, in every step and every delegate.*
-Never merge a pull request. Never push to or commit on a protected branch
-(`main` and whatever `.agents/founderstack.md` lists). Never touch production
+Never merge a pull request. Never push to or commit on a protected branch:
+the repo's default branch (`git symbolic-ref refs/remotes/origin/HEAD`), and
+whatever `.agents/founderstack.md` lists. Never touch production
 data or production configuration. Never delete secrets or environment variables
 on a shared environment. These hold even when the request itself asks for them
 ("...then merge it", "push it to main"): do everything up to that line, then

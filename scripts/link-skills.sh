@@ -8,8 +8,10 @@
 #   scripts/link-skills.sh --apply                 # do it
 #   scripts/link-skills.sh --target ~/.claude/skills --apply
 #
-# An existing symlink is re-pointed. A real directory with the same name is never touched:
-# it is reported, because it may be someone's own copy.
+# Only links that already point into a founderstack checkout (a path ending in
+# skills/<category>/<name>, old or new categories) are re-pointed. A link to anything else, or a
+# real directory with the same name, is never touched: it is reported, because skills called
+# verify, why or grill are common and may be your own.
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -28,9 +30,16 @@ n_new=0; n_fix=0; n_ok=0; n_skip=0
 for md in "$REPO"/skills/{engineering,agent-ops,company,machine}/*/SKILL.md; do
   src="$(dirname "$md")"; name="$(basename "$src")"; dst="$TARGET/$name"
   if [ -L "$dst" ]; then
-    if [ "$(readlink "$dst")" = "$src" ]; then n_ok=$((n_ok + 1)); continue; fi
-    echo "relink  $name: $(readlink "$dst") -> $src"; n_fix=$((n_fix + 1))
-    [ $APPLY = 1 ] && ln -sfn "$src" "$dst"
+    cur="$(readlink "$dst")"
+    if [ "$cur" = "$src" ]; then n_ok=$((n_ok + 1)); continue; fi
+    case "${cur%/}" in
+      */skills/engineering/"$name"|*/skills/productivity/"$name"|*/skills/bookkeeping/"$name"|*/skills/security/"$name"|\
+      */skills/agent-ops/"$name"|*/skills/company/"$name"|*/skills/machine/"$name")
+        echo "relink  $name: $cur -> $src"; n_fix=$((n_fix + 1))
+        [ $APPLY = 1 ] && ln -sfn "$src" "$dst" ;;
+      *)
+        echo "skip    $name: $dst links to $cur, which is not a founderstack checkout (left alone)"; n_skip=$((n_skip + 1)) ;;
+    esac
   elif [ -e "$dst" ]; then
     echo "skip    $name: $dst is a real directory, not a link (left alone)"; n_skip=$((n_skip + 1))
   else

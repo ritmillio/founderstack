@@ -1,6 +1,6 @@
 ---
 name: new-skill
-description: Turn a workflow you keep re-explaining into a skill an agent can follow cold: a trigger-first description, when not to use it, numbered steps with exact commands, the traps, and a first eval case that checks it fires from a natural prompt and improves the outcome. Use when the user says "make this a skill", "codify this", "create a skill", or the same instructions have been given twice.
+description: "Turn a workflow you keep re-explaining into a skill an agent can follow cold: a trigger-first description, when not to use it, numbered steps with exact commands, the traps, and a first eval case that checks it fires from a natural prompt and improves the outcome. Use when the user says \"make this a skill\", \"codify this\", \"create a skill\", or the same instructions have been given twice."
 ---
 
 # /new-skill: write it once, prove it helps

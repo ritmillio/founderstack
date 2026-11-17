@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Prove a finished change works before calling it done: run the repo gates, read the diff as a hostile reviewer, write the missing edge-case tests, drive the real app, and loop until a full pass finds nothing new. Ends in SHIP, SHIP WITH NOTES or NOT READY plus what was not checked. Use when the user says "verify", "make sure this works", "is this ready", or before opening or un-drafting a PR.
+description: "Prove a finished change works before calling it done: run the repo gates, read the diff as a hostile reviewer, write the missing edge-case tests, drive the real app, and loop until a full pass finds nothing new. Ends in SHIP, SHIP WITH NOTES or NOT READY plus what was not checked. Use when the user says \"verify\", \"make sure this works\", \"is this ready\", or before opening or un-drafting a PR."
 ---
 
 # /verify: done means proven
@@ -25,7 +25,11 @@ finds nothing new. It ends with a verdict you can defend.
    usual port may be serving a different worktree.
 3. Write a three-line contract: what the change must do, for whom, and what must
    not break. Judge every finding against the contract, not against taste.
-4. **The author does not verify.** If you wrote the change in this session,
+4. **Whose branch is it?** If you are reviewing someone else's branch or PR,
+   you are in **report mode**: you change nothing on their branch. Tests you
+   write go in a scratch worktree, and fixes become suggestions in the report.
+   On your own branch you fix as you go.
+5. **The author does not verify.** If you wrote the change in this session,
    hand phases 2 to 4 to a fresh subagent with the contract and the diff range,
    and keep the verdict theirs. Say in the reply that you did.
 
@@ -63,8 +67,9 @@ it wrong:
 
 For each edge case that is testable as plain logic, write the test before you
 decide whether the code handles it, and let the test tell you. Put it next to
-the existing suite. A new test that fails is a finding: fix the code, not the
-test, unless the test misread the contract. What can only be checked in the
+the existing suite. A new test that fails is a finding: fix the code (in report
+mode, describe the fix instead), not the test, unless the test misread the
+contract. What can only be checked in the
 running app goes to phase 4.
 
 ### 4. Live drive (when there is a UI or an API)

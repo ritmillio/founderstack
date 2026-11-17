@@ -1,6 +1,6 @@
 ---
 name: founder-setup
-description: Set up founderstack for this repo: detect the gate commands, protected branches, production guards, dev URL, where work is logged and who sits on the review council, show the draft, and write .agents/founderstack.md once you approve. Use when the user says "set up founderstack" or "configure founderstack for this repo", or a founderstack skill reports that .agents/founderstack.md is missing.
+description: "Set up founderstack for this repo: detect the gate commands, protected branches, production guards, dev URL, where work is logged and who sits on the review council, show the draft, and write .agents/founderstack.md once you approve. Use when the user says \"set up founderstack\" or \"configure founderstack for this repo\", or a founderstack skill reports that .agents/founderstack.md is missing."
 ---
 
 # /founder-setup: teach the stack this repo, once
@@ -51,8 +51,10 @@ Skills read the file; no skill hardcodes a project.
 
 - CI is the truth for gates. A `test` script that CI does not run, or runs with
   different flags, is not the gate. Copy the command CI runs.
-- A protected-branch list that says only `main` usually misses release and
-  staging branches. Ask the user.
+- Protected means nobody pushes to it directly: the default branch, plus
+  deploy branches such as `staging` or `production`. An integration branch
+  that PRs get folded into (`release/1.4`) is *not* protected; `pr-fold`
+  refuses every branch on this list. Ask the user which kind each branch is.
 - Never put secrets, connection strings or tokens in the file, because it gets
   committed. Write the guard ("never run `db:push` against prod"), not the URL.
 

@@ -12,11 +12,12 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const args = process.argv.slice(2);
 const FIX = args.includes("--fix");
 const rootArg = args.indexOf("--root");
-const ROOT = resolve(rootArg >= 0 ? args[rootArg + 1] : join(dirname(new URL(import.meta.url).pathname), ".."));
+const ROOT = resolve(rootArg >= 0 ? args[rootArg + 1] : join(dirname(fileURLToPath(import.meta.url)), ".."));
 
 const SHIPPED = ["engineering", "agent-ops", "company", "machine"];
 const PARKED = ["in-progress", "deprecated"];
@@ -43,15 +44,25 @@ const readJson = (p) => {
 
 // --- frontmatter ---------------------------------------------------------------------------
 // Enough YAML for SKILL.md: top-level `key: value` pairs, quoted or bare, nested blocks skipped.
+// A bare value that strict YAML parsers reject (": " or " #" inside, or a reserved first
+// character) is recorded in out.__unsafe, because some agents then drop the whole skill.
 function frontmatter(text) {
   const m = text.match(/^---\n([\s\S]*?)\n---\n/);
   if (!m) return null;
-  const out = {};
+  const out = { __unsafe: [] };
   for (const line of m[1].split("\n")) {
     const kv = line.match(/^([A-Za-z][\w-]*):\s*(.*)$/);
     if (!kv) continue;
     let v = kv[2].trim();
-    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) v = v.slice(1, -1);
+    if (v.startsWith('"') && v.endsWith('"') && v.length > 1) {
+      try {
+        v = JSON.parse(v);
+      } catch {
+        out.__unsafe.push(kv[1]);
+        v = v.slice(1, -1);
+      }
+    } else if (v.startsWith("'") && v.endsWith("'") && v.length > 1) v = v.slice(1, -1).replace(/''/g, "'");
+    else if (v && (/: |\s#/.test(v) || /^[[\]{}&*!|>'"%@`,?:-]\s?/.test(v))) out.__unsafe.push(kv[1]);
     out[kv[1]] = v;
   }
   return out;
@@ -92,6 +103,7 @@ for (const s of skills) {
     err(f, "missing YAML frontmatter");
     continue;
   }
+  for (const key of fm.__unsafe) err(f, `frontmatter "${key}" is not valid YAML as written; wrap the value in double quotes`);
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(s.name)) err(f, "folder name must be kebab-case");
   if (fm.name !== s.name) err(f, `frontmatter name "${fm.name}" must equal the folder name "${s.name}"`);
   const desc = fm.description || "";

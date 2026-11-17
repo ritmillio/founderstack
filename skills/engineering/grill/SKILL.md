@@ -1,6 +1,6 @@
 ---
 name: grill
-description: Pressure-test a plan or design before any code: read it in full, then ask the uncomfortable questions one at a time, each with a recommended answer, until every decision is resolved or parked as an open question. Use when the user says "grill this", "what do you think of this plan", "is this a good idea", or before work that touches data, auth, prompts, several surfaces or many files.
+description: "Pressure-test a plan or design before any code: read it in full, then ask the uncomfortable questions one at a time, each with a recommended answer, until every decision is resolved or parked as an open question. Use when the user says \"grill this\", \"what do you think of this plan\", \"is this a good idea\", or before work that touches data, auth, prompts, several surfaces or many files."
 ---
 
 # /grill: settle the questions while changing your mind is cheap

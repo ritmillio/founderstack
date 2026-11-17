@@ -1,6 +1,6 @@
 ---
 name: why
-description: Find the root cause of a bug, not a plausible cause: reproduce, get one command that fails every time, minimise, test one hypothesis at a time, name the assumption that turned out false, then fix at the cause with a regression guard. Use when something is broken, throws, returns the wrong thing, regressed ("this used to work"), or the user asks "why did X happen".
+description: "Find the root cause of a bug, not a plausible cause: reproduce, get one command that fails every time, minimise, test one hypothesis at a time, name the assumption that turned out false, then fix at the cause with a regression guard. Use when something is broken, throws, returns the wrong thing, regressed (\"this used to work\"), or the user asks \"why did X happen\"."
 ---
 
 # /why: the cause, not a cause

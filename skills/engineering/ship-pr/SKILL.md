@@ -1,6 +1,6 @@
 ---
 name: ship-pr
-description: Take a finished branch to "ready for you to merge": file a PR whose title says why it matters and whose body leads with the problem, wait on CI and review bots with an event-driven waiter, fix real findings, answer the rest, and stop when the latest commit is green. Never merges. Use when the user says "ship it", "open a PR", "file a PR", "babysit the PR", or "get this ready to merge".
+description: "Take a finished branch to \"ready for you to merge\": file a PR whose title says why it matters and whose body leads with the problem, wait on CI and review bots with an event-driven waiter, fix real findings, answer the rest, and stop when the latest commit is green. Never merges. Use when the user says \"ship it\", \"open a PR\", \"file a PR\", \"babysit the PR\", or \"get this ready to merge\"."
 ---
 
 # /ship-pr: from finished branch to "ready for you to merge"
@@ -64,8 +64,9 @@ the merge.
      fix in a new commit and a short reply that links it. A wrong or
      out-of-scope comment gets a one-line reason. Do not grow the PR to please
      a bot.
-   - `BEHIND` or `DIRTY`: rebase or merge the base as the repo prefers, re-run
-     the gates, push.
+   - `BEHIND` or `DIRTY`: merge the base branch in, resolve, re-run the gates,
+     push. Rebase only when the user or the repo's rules ask for it, and then
+     push with `--force-with-lease` to your own branch only.
    Then start the waiter again.
 7. **Stop** when the latest commit is green and no change request is open. If
    the same check fails three times after real fix attempts, stop and report;

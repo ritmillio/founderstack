@@ -14,7 +14,7 @@ Commands that must pass before anything is called done. Copy what CI runs.
 - extra: `pnpm db:check-migrations` (only when migrations change)
 
 ## Protected
-- branches: main, staging        # never commit to, never push
+- branches: main, staging        # never commit to, never push (not release/* you fold into)
 - push remote: origin            # the remote that accepts pushes
 - pull requests: draft first, never merge
 

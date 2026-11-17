@@ -14,12 +14,13 @@
 
 set -euo pipefail
 
+case "${1:-}" in -h|--help) sed -n '2,15p' "$0"; exit 0 ;; esac
 NAME="${1:-}"; shift || true
-DESC=""; CAT="engineering"; REPO=""
+DESC=""; CAT="engineering"; REPO=""; CAT_SET=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --description) DESC="$2"; shift 2 ;;
-    --category)    CAT="$2";  shift 2 ;;
+    --category)    CAT="$2";  CAT_SET=1; shift 2 ;;
     --repo)        REPO="$2"; shift 2 ;;
     -h|--help)     sed -n '2,15p' "$0"; exit 0 ;;
     *) echo "unknown flag: $1" >&2; exit 2 ;;
@@ -32,9 +33,11 @@ done
 REPO="${REPO:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 AUTHOR="$(git -C "$REPO" config user.name 2>/dev/null || echo "")"
 
-if [[ -f "$REPO/.claude-plugin/marketplace.json" && -d "$REPO/skills/$CAT" ]]; then
+if [[ -f "$REPO/.claude-plugin/marketplace.json" && -d "$REPO/skills" ]]; then
+  [[ -d "$REPO/skills/$CAT" ]] || { echo "unknown category '$CAT'; have: $(ls "$REPO/skills" | tr '\n' ' ')" >&2; exit 2; }
   LAYOUT=plugin; DIR="$REPO/skills/$CAT/$NAME"; EVAL="$REPO/evals/$NAME--basic"
 else
+  [[ $CAT_SET == 1 ]] && echo "note: --category is ignored outside a plugin repo" >&2
   LAYOUT=plain; BASE="$REPO/.agents/skills"
   [[ -d "$REPO/.agents/skills" ]] || { [[ -d "$REPO/.claude/skills" ]] && BASE="$REPO/.claude/skills"; }
   DIR="$BASE/$NAME"; EVAL="$DIR/evals/basic"
@@ -42,11 +45,13 @@ fi
 [[ -e "$DIR" ]] && { echo "${DIR#"$REPO"/} already exists" >&2; exit 2; }
 [[ -e "$EVAL" ]] && { echo "${EVAL#"$REPO"/} already exists" >&2; exit 2; }
 
+# YAML-safe: a JSON string is a valid YAML double-quoted scalar, whatever ": " or quotes DESC holds.
+DESC_Q="$(node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$DESC")"
 mkdir -p "$DIR" "$EVAL/graders"
 cat > "$DIR/SKILL.md" <<MD
 ---
 name: $NAME
-description: $DESC
+description: $DESC_Q
 ---
 
 # /$NAME: one-line hook
@@ -116,7 +121,9 @@ if [[ $LAYOUT == plugin ]]; then
     m.plugins.push({ name: NAME, source: `./skills/${CAT}/${NAME}`, description: DESC, version: "0.1.0" });
     writeFileSync(mp, JSON.stringify(m, null, 2) + "\n");
   '
-  [[ -f "$REPO/scripts/check-skills.mjs" ]] && node "$REPO/scripts/check-skills.mjs" --fix >/dev/null || true
+  if [[ -f "$REPO/scripts/check-skills.mjs" ]]; then
+    node "$REPO/scripts/check-skills.mjs" --fix >/dev/null || echo "note: check-skills reports errors (expected until the README row and eval are written)" >&2
+  fi
   echo "created  skills/$CAT/$NAME/SKILL.md (+ .claude-plugin/plugin.json)"
   echo "created  evals/$NAME--basic/ (prompt + trigger grader + outcome grader)"
   echo "updated  .claude-plugin/marketplace.json, .claude-plugin/plugin.json"

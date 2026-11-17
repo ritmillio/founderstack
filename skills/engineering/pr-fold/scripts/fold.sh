@@ -9,17 +9,18 @@
 # Options: --worktree <dir>     default: <repo>-fold-<target> next to the repo
 #          --repo <dir>         default: the git toplevel of the cwd
 #          --migrations <dir>   repo-relative dir of NNNN_*.sql files to check for prefix collisions
-#          --protect <a,b>      extra protected branches (main, master, staging, development,
-#                               production and the `branches:` line of .agents/founderstack.md
-#                               are always protected)
-# Exit: 0 clean, 1 conflict predicted or hit, 2 migration prefix collision, 3 both (bitfield).
+#          --protect <a,b>      extra protected branches (the repo's default branch, main, master,
+#                               staging, development, production and the `branches:` line of
+#                               .agents/founderstack.md are always protected)
+# Exit: 0 clean, 1 conflict predicted or hit, 2 migration prefix collision, 3 both (bitfield),
+#       4 refused or failed (protected target, bad input, git or gh error).
 # bash 3.2 compatible (macOS /bin/bash): no associative arrays, no mapfile.
 set -euo pipefail
 
 TARGET=""; APPLY=0; WT=""; REPO=""; PRS=""; MIG_DIR=""; PROTECT="main master staging development production"
 while [ $# -gt 0 ]; do
   case "$1" in
-    --into) TARGET="$2"; shift 2 ;;
+    --into) [ $# -ge 2 ] || die "--into needs a branch"; TARGET="$2"; shift 2 ;;
     --apply) APPLY=1; shift ;;
     --worktree) WT="$2"; shift 2 ;;
     --repo) REPO="$2"; shift 2 ;;
@@ -30,7 +31,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-die() { echo "fold: $*" >&2; exit 1; }
+die() { echo "fold: $*" >&2; exit 4; }
 [ -n "$TARGET" ] || die "--into <integration-branch> is required"
 [ -n "$PRS" ] || die "give at least one PR number"
 REPO="${REPO:-$(git rev-parse --show-toplevel)}"
@@ -43,6 +44,10 @@ if [ -f "$CFG" ]; then
 fi
 PUSH_REMOTE="${PUSH_REMOTE:-origin}"
 T="${TARGET#origin/}"
+case "$T" in HEAD|*/HEAD|"") die "refusing: '$TARGET' is not a branch name." ;; esac
+DEFAULT="$(G symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null || true)"
+[ -z "$DEFAULT" ] && DEFAULT="$(cd "$REPO" && gh repo view --json defaultBranchRef --jq .defaultBranchRef.name 2>/dev/null || true)"
+PROTECT="$PROTECT ${DEFAULT#origin/}"
 for B in $PROTECT; do
   [ "$T" = "$B" ] && die "refusing: '$TARGET' is protected. Folds go into integration branches only."
 done
@@ -91,7 +96,10 @@ $P $N $F"
 
   if [ $APPLY = 0 ]; then
     # Predict against the running tip: merge-tree writes no refs and touches no checkout.
-    if OUT="$(G merge-tree --write-tree --name-only --no-messages "$TIP" "$HEAD_SHA" 2>/dev/null)"; then
+    RC=0; OUT="$(G merge-tree --write-tree --name-only --no-messages "$TIP" "$HEAD_SHA" 2>&1)" || RC=$?
+    # merge-tree: 0 clean, 1 conflicts, anything else is an error (for example git older than 2.38).
+    [ $RC -gt 1 ] && die "git merge-tree failed (needs git 2.38+): $(printf '%s' "$OUT" | head -1)"
+    if [ $RC = 0 ]; then
       TIP="$(G commit-tree "$(printf '%s\n' "$OUT" | head -1)" -p "$TIP" -p "$HEAD_SHA" -m sim)"
       printf '%-6s %-40s %-8s %s\n' "#$N" "$HEAD_REF" "$STATE" "clean  areas: $AREAS$NOTE"
     else
@@ -111,9 +119,13 @@ $P $N $F"
   [ -z "$(git -C "$WT" status --porcelain)" ] || die "$WT is dirty: resolve or clean it first"
   [ "$(git -C "$WT" rev-parse --abbrev-ref HEAD)" = HEAD ] || die "$WT is on a branch, not a detached fold worktree"
   git -C "$WT" merge-base --is-ancestor "$BASE" HEAD || die "$WT does not contain $TARGET's tip ${BASE:0:9}: stale fold worktree"
-  if git -C "$WT" merge --no-ff --no-edit -m "merge: #$N $HEAD_REF into $TARGET" "$HEAD_SHA" >/dev/null 2>&1; then
+  if MERR="$(git -C "$WT" merge --no-ff --no-edit -m "merge: #$N $HEAD_REF into $TARGET" "$HEAD_SHA" 2>&1)"; then
     TIP="$(git -C "$WT" rev-parse HEAD)"; APPLIED=1
     printf '%-6s %-40s %-8s %s\n' "#$N" "$HEAD_REF" "$STATE" "merged ${TIP:0:9}  areas: $AREAS$NOTE"
+  elif [ -z "$(git -C "$WT" diff --name-only --diff-filter=U)" ]; then
+    # Not a conflict: a hook or another error stopped the merge. Undo it and show why.
+    git -C "$WT" merge --abort 2>/dev/null || true
+    die "merge of #$N failed without conflicts: $(printf '%s' "$MERR" | tail -3 | tr '\n' ' ')"
   else
     printf '%-6s %-40s %-8s %s\n' "#$N" "$HEAD_REF" "$STATE" "CONFLICT: stopped. Resolve in $WT, then: git -C $WT commit --no-edit"
     git -C "$WT" diff --name-only --diff-filter=U | sed 's/^/        U /'
