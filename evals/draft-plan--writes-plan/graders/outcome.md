@@ -1,7 +1,7 @@
 ---
 type: llm
 weight: 2
-target:
+focus:
   source: file
   path: docs/webhook-plan.md
 ---

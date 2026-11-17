@@ -181,10 +181,11 @@ if (existsSync(readmePath)) {
 
 // --- every shipped skill has at least one eval case ----------------------------------------
 const evalsDir = join(ROOT, "evals");
-const cases = existsSync(evalsDir) ? readdirSync(evalsDir).filter((d) => statSync(join(evalsDir, d)).isDirectory()) : [];
+const cases = existsSync(evalsDir)
+  ? readdirSync(evalsDir).filter((d) => d !== "results" && d !== "mocks" && statSync(join(evalsDir, d)).isDirectory())
+  : [];
 for (const c of cases) {
   const dir = join(evalsDir, c);
-  if (c === "results" || c === "mocks") continue;
   if (!existsSync(join(dir, "prompt.md")) && !existsSync(join(dir, "case.yaml"))) err(rel(dir), "eval case needs prompt.md or case.yaml");
   const owner = c.split("--")[0];
   if (!names.has(owner)) err(rel(dir), `eval case must be named <skill>--<case>; no skill "${owner}"`);
