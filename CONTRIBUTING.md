@@ -13,7 +13,7 @@ anything already covered by an existing skill.
 ## Writing one
 
 ```bash
-./scripts/new-skill.sh my-skill --category engineering --description "What it does and when to use it"
+bash skills/engineering/new-skill/scripts/new-skill.sh my-skill --category engineering --description "What it does. Use when ..."
 ```
 
 The `description` is load-bearing. It is the only thing an agent sees when
@@ -37,6 +37,7 @@ conversation:
 Skills here must work in agents other than Claude Code:
 
 - Do not assume a slash command exists.
+- Project rules come from the host repo's `.agents/founderstack.md`, never from the skill.
 - Do not hardcode `${CLAUDE_PLUGIN_ROOT}`. Resolve the skill directory at
   runtime; `skills/relay/SKILL.md` shows the pattern.
 - Do not assume a package manager, a directory layout, or an operating system.
@@ -48,14 +49,26 @@ Skills here must work in agents other than Claude Code:
 ## Before opening a PR
 
 ```bash
-claude plugin validate ./skills/<category>/<name>
+node scripts/check-skills.mjs          # the lint CI runs; must be 0 errors
+node scripts/check-skills.test.mjs     # if you touched the lint
 claude plugin validate .
-npx skills@latest add ritmillio/founderstack --list
+claude plugin eval . --case '<name>--*' --runs 3 --scaffold --max-cost-usd 3
 ```
+
+Every shipped skill needs at least one eval case in `evals/<name>--<case>/`:
+a prompt phrased the way a user would ask (without naming the skill), a
+`triggered` grader, and an `outcome` grader that a judge can apply as PASS or
+FAIL. Grade the outcome, not the wording. A score near the no-plugin baseline
+with the trigger failing means the description does not fire.
+
+Optional private-name guard: list words that must never appear (client names,
+internal project names) one per line in `.denylist` (gitignored) or in a file
+named by `$FOUNDERSTACK_DENYLIST`. The lint fails on any match.
 
 A skill that is written but not yet trustworthy goes in `skills/in-progress/`
 rather than shipping half-done. A skill you stop believing in moves to
 `skills/deprecated/` instead of being deleted: the reasoning stays readable.
+An idea we decided against gets a file in `.out-of-scope/`.
 
 Then actually run the skill end to end. A skill that has never been executed is
 a hypothesis.

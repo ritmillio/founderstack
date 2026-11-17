@@ -1,6 +1,42 @@
 # Changelog
 
-## Unreleased
+## 1.0.0: founderstack (2026-11-17)
+
+The repo is now **founderstack** (`ritmillio/skills` redirects to
+`ritmillio/founderstack`). It is a stack now, not a shelf of skills: one entry
+point, shared principles, per-repo config, an eval for every skill, CI lint.
+Built after studying pstack, tstack and mattpocock/skills; see CREDITS.md.
+
+- `founder-mode`: the entry point. 16 playbooks, `principles.md` (16 rules),
+  `worker.md` for delegates, a shared Reply frame that always lists what was
+  not checked.
+- `founder-setup`: writes `.agents/founderstack.md` (gates, protected
+  branches, production guards, live drive, worklog, council seats) after you
+  approve the draft.
+- New skills: `verify`, `why`, `grill`, `spike`, `pr-fold`, `new-skill` (made
+  generic from a private repo's skills), `council`, `ship-pr` (with
+  `pr-watch.sh`, an event-driven PR waiter).
+- Folded in: `notion-worklog` (#8), `model-router` (#10), private-name scrub
+  (#9).
+- Layout: `skills/engineering`, `agent-ops`, `company`, `machine`. One bundle
+  plugin (`/plugin install founderstack --marketplace ritmillio/founderstack`);
+  per-skill plugins stay installable.
+- Quality: `evals/<skill>--<case>/` for all 25 skills (`claude plugin eval`,
+  with and without the stack); `scripts/check-skills.mjs` + self-test,
+  shellcheck and `claude plugin validate` in CI.
+
+**Upgrading**
+
+- Marketplace renamed `ritmillio-tools` -> `founderstack`. Remove the old one
+  and add the new one:
+  `/plugin marketplace remove ritmillio-tools`, then
+  `/plugin marketplace add ritmillio/founderstack`.
+- Skills moved folders. Local symlinks into an old checkout break after you
+  pull; repair them with `scripts/link-skills.sh --apply`. `npx skills update`
+  users need nothing (the CLI finds skills by scanning).
+- `reclaim`'s guard keeps its launchd label from #9 (`dev.reclaim.guard`).
+
+## Before 1.0.0
 
 - `model-router`: triage a task before doing it. Probe (max 3 tool calls), score scope,
   ambiguity, reasoning depth, risk and verification 0-2, route to small/mid/large/frontier

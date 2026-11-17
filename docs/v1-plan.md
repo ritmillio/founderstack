@@ -31,7 +31,7 @@ None of them has: unattended multi-hour runs (relay), safety rules for many agen
 - **`founder-mode`: the one entry point.** It reads the task, picks a playbook from `playbooks/`, copies its steps into the todo list and runs the skills those steps name. Each playbook has an ownership line, 4-8 steps and a fixed **Reply** contract that requires evidence. If no playbook fits, it designs one for this task and says so.
 - **`principles.md`: one file, not 24 skills.** About 15 principles drawn from rulings we already live by. Each has a "when it applies" trigger. When the agent applies one it must name it and the decision it changed. Subagents get the same file through `worker.md`.
 - **`founder-setup` writes `.agents/founderstack.md` in the host repo.** It holds: gate commands, protected branches, the push remote, prod guards, the dev URL, the invariants file, where the worklog goes, notification settings, council seats. Skills read this file and never hardcode a project. If it is missing they detect what they can and ask.
-- **Invocation split (from Matt).** Skills with side effects or a high token cost (`founder-setup`, `pr-fold`, `collect-bills`, `free-disk`, `memory-hygiene`) are user-invoked only. The rest stay model-invoked, with descriptions that lead with triggers.
+- **Invocation split (from Matt), applied sparingly.** All 25 skills stay model-invoked with trigger-first descriptions, because every skill with side effects already starts with a dry run or a draft and asks before acting. `disable-model-invocation` is available for future skills that spend money or write without asking.
 - **Neutral capability verbs, one adapter table per harness** (`docs/harness.md`): "ask with options", "spawn a subagent", "watch a background process". Mapped for Claude Code, Codex, Cursor and Gemini CLI. A missing capability is reported, never faked.
 - **Hard stops, in every relevant skill:** never merge, never push `main` or other protected branches, never touch production data, ask with selectable options and put the recommendation first, no AI signature on the user's output.
 
@@ -40,7 +40,7 @@ None of them has: unattended multi-hour runs (relay), safety rules for many agen
 | Folder | Skills | Source |
 |---|---|---|
 | `engineering/` | founder-mode, founder-setup, grill, draft-plan, shred-plan, spike, why, verify, council, ship-pr, pr-fold, safe-migration, relay, new-skill | 4 kept, 6 ported and made generic, 4 new |
-| `agent-ops/` | telegram-notify, memory-hygiene, worklog, model-router | 2 kept, 2 from open PRs #8 and #10 |
+| `agent-ops/` | telegram-notify, memory-hygiene, notion-worklog, model-router | 2 kept, 2 from open PRs #8 and #10 |
 | `company/` | morning-brief, collect-bills, vercel-triage | kept |
 | `machine/` | reclaim, free-disk, worktree-janitor, mac-compromise-check | kept |
 
