@@ -1,0 +1,12 @@
+{
+  "name": "spike",
+  "description": "Build a throwaway prototype that answers one design or behaviour question inside a time budget, show the variants side by side, get the user to pick, then delete it. Use when the user says \"let's try\", \"what if we\", \"show me two versions\", \"spike this\", or a choice is unclear and a static mockup would not settle it.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Zoltan Fodor",
+    "url": "https://github.com/ritmillio"
+  },
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
+  "license": "MIT"
+}

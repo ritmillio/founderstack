@@ -1,0 +1,12 @@
+{
+  "name": "council",
+  "description": "Get a change reviewed by several models from different vendors, in rounds, until they agree or the budget ends: stable finding ids, blocker/should/nit judged against the stated intent, fixes between rounds, a score table in the PR body. Without other vendors it runs fresh reviewers with different lenses and says so. Use when the user says \"council\", \"second opinion\", \"cross-review this\", or before shipping a risky change (data, money, auth, security, public API).",
+  "version": "0.1.0",
+  "author": {
+    "name": "Zoltan Fodor",
+    "url": "https://github.com/ritmillio"
+  },
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
+  "license": "MIT"
+}

@@ -27,7 +27,7 @@ Effort: `low` · `medium` · `high` · `xhigh` · `max` (or the agent's reasonin
 
 ## Step 0: read the host repo's overrides (optional)
 
-If the repo has `.agents/model-router.md` (or a `## Model router` section in `AGENTS.md`/`CLAUDE.md`), read it. It lists paths that are always Risk 2, models the team never uses, and tasks with a fixed route. It overrides the defaults below.
+If the repo has `.agents/model-router.md`, a `## Models` section in `.agents/founderstack.md`, or a `## Model router` section in `AGENTS.md`/`CLAUDE.md`, read it. It lists paths that are always Risk 2, models the team never uses, and tasks with a fixed route. It overrides the defaults below.
 
 ## Step 1: probe (cheap, max 3 tool calls, never read whole files)
 

@@ -127,6 +127,66 @@
       "source": "./skills/agent-ops/model-router",
       "description": "Pick the cheapest model and effort that can do a task well, BEFORE doing it or spawning agents. Cheap probe (max 3 tool calls), five-axis score, a one-line route card (model + effort + delegate or not) for the main session, each subagent and each workflow agent. Use at the start of any non-trivial task, before spawning subagents, or when the user says 'which model', 'what effort', 'save tokens', 'don't burn tokens'.",
       "version": "0.1.0"
+    },
+    {
+      "name": "founder-mode",
+      "source": "./skills/engineering/founder-mode",
+      "description": "The founderstack entry point. Reads the task, picks a playbook (bug fix, feature, plan, unattended run, shipping, release fold, migration, prod triage, review, morning, books, machine, new skill, session wrap), and runs the skills that playbook names, ending in evidence and a list of what was not checked. Use when the user says \"founder mode\", \"do this properly\", \"take this end to end\", \"full rigor\", or asks which founderstack skill fits (\"founder mode help\").",
+      "version": "0.1.0"
+    },
+    {
+      "name": "new-skill",
+      "source": "./skills/engineering/new-skill",
+      "description": "Turn a workflow you keep re-explaining into a skill an agent can follow cold: a trigger-first description, when not to use it, numbered steps with exact commands, the traps, and a first eval case that checks it fires from a natural prompt and improves the outcome. Use when the user says \"make this a skill\", \"codify this\", \"create a skill\", or the same instructions have been given twice.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "founder-setup",
+      "source": "./skills/engineering/founder-setup",
+      "description": "Set up founderstack for this repo: detect the gate commands, protected branches, production guards, dev URL, where work is logged and who sits on the review council, show the draft, and write .agents/founderstack.md once you approve. Run once per repo, or again when the setup changes.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "verify",
+      "source": "./skills/engineering/verify",
+      "description": "Prove a finished change works before calling it done: run the repo gates, read the diff as a hostile reviewer, write the missing edge-case tests, drive the real app, and loop until a full pass finds nothing new. Ends in SHIP, SHIP WITH NOTES or NOT READY plus what was not checked. Use when the user says \"verify\", \"make sure this works\", \"is this ready\", or before opening or un-drafting a PR.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "why",
+      "source": "./skills/engineering/why",
+      "description": "Find the root cause of a bug, not a plausible cause: reproduce, get one command that fails every time, minimise, test one hypothesis at a time, name the assumption that turned out false, then fix at the cause with a regression guard. Use when something is broken, throws, returns the wrong thing, regressed (\"this used to work\"), or the user asks \"why did X happen\".",
+      "version": "0.1.0"
+    },
+    {
+      "name": "grill",
+      "source": "./skills/engineering/grill",
+      "description": "Pressure-test a plan or design before any code: read it in full, then ask the uncomfortable questions one at a time, each with a recommended answer, until every decision is resolved or parked as an open question. Use when the user says \"grill this\", \"what do you think of this plan\", \"is this a good idea\", or before work that touches data, auth, prompts, several surfaces or many files.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "spike",
+      "source": "./skills/engineering/spike",
+      "description": "Build a throwaway prototype that answers one design or behaviour question inside a time budget, show the variants side by side, get the user to pick, then delete it. Use when the user says \"let's try\", \"what if we\", \"show me two versions\", \"spike this\", or a choice is unclear and a static mockup would not settle it.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "pr-fold",
+      "source": "./skills/engineering/pr-fold",
+      "description": "Fold several open PR branches into an integration or release branch: dry run for conflicts and migration prefix collisions, merge in a detached worktree, resolve with both sides' intent, gate what the fold touched, put cross-PR breakage in one seams commit, push the integration branch. Never a protected branch, never a GitHub merge. Use when the user says \"fold #N into ...\", \"put these PRs on the release branch\", or \"one release PR with all open PRs\".",
+      "version": "0.1.0"
+    },
+    {
+      "name": "council",
+      "source": "./skills/engineering/council",
+      "description": "Get a change reviewed by several models from different vendors, in rounds, until they agree or the budget ends: stable finding ids, blocker/should/nit judged against the stated intent, fixes between rounds, a score table in the PR body. Without other vendors it runs fresh reviewers with different lenses and says so. Use when the user says \"council\", \"second opinion\", \"cross-review this\", or before shipping a risky change (data, money, auth, security, public API).",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ship-pr",
+      "source": "./skills/engineering/ship-pr",
+      "description": "Take a finished branch to \"ready for you to merge\": file a PR whose title says why it matters and whose body leads with the problem, wait on CI and review bots with an event-driven waiter, fix real findings, answer the rest, and stop when the latest commit is green. Never merges. Use when the user says \"ship it\", \"open a PR\", \"file a PR\", \"babysit the PR\", or \"get this ready to merge\".",
+      "version": "0.1.0"
     }
   ]
 }

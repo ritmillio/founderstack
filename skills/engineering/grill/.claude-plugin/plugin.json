@@ -1,0 +1,12 @@
+{
+  "name": "grill",
+  "description": "Pressure-test a plan or design before any code: read it in full, then ask the uncomfortable questions one at a time, each with a recommended answer, until every decision is resolved or parked as an open question. Use when the user says \"grill this\", \"what do you think of this plan\", \"is this a good idea\", or before work that touches data, auth, prompts, several surfaces or many files.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Zoltan Fodor",
+    "url": "https://github.com/ritmillio"
+  },
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
+  "license": "MIT"
+}

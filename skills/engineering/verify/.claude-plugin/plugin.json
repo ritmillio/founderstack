@@ -1,0 +1,12 @@
+{
+  "name": "verify",
+  "description": "Prove a finished change works before calling it done: run the repo gates, read the diff as a hostile reviewer, write the missing edge-case tests, drive the real app, and loop until a full pass finds nothing new. Ends in SHIP, SHIP WITH NOTES or NOT READY plus what was not checked. Use when the user says \"verify\", \"make sure this works\", \"is this ready\", or before opening or un-drafting a PR.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Zoltan Fodor",
+    "url": "https://github.com/ritmillio"
+  },
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
+  "license": "MIT"
+}
