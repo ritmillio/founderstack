@@ -50,7 +50,7 @@ Skills here must work in agents other than Claude Code:
 ```bash
 claude plugin validate ./skills/<category>/<name>
 claude plugin validate .
-npx skills@latest add ritmillio/skills --list
+npx skills@latest add ritmillio/founderstack --list
 ```
 
 A skill that is written but not yet trustworthy goes in `skills/in-progress/`

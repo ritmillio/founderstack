@@ -8,7 +8,7 @@
 #
 # Creates skills/my-skill/ with a SKILL.md, adds the Claude Code plugin
 # manifest, and appends the entry to the marketplace so `/plugin install
-# my-skill@ritmillio-tools` works on the next push.
+# my-skill@founderstack` works on the next push.
 
 set -euo pipefail
 
@@ -64,8 +64,8 @@ cat > "$DIR/.claude-plugin/plugin.json" <<EOF
   "description": "$DESC",
   "version": "0.1.0",
   "author": { "name": "Zoltan Fodor", "url": "https://github.com/ritmillio" },
-  "homepage": "https://github.com/ritmillio/skills",
-  "repository": "https://github.com/ritmillio/skills",
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
   "license": "MIT"
 }
 EOF
@@ -82,5 +82,5 @@ echo "created skills/$CAT/$NAME/SKILL.md"
 echo "registered in .claude-plugin/marketplace.json"
 echo
 echo "next: write the SKILL.md, then"
-echo "  npx skills@latest add ritmillio/skills --skill $NAME   # into every agent"
+echo "  npx skills@latest add ritmillio/founderstack --skill $NAME   # into every agent"
 echo "  claude plugin validate ./skills/$CAT/$NAME"

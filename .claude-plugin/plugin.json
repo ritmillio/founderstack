@@ -1,0 +1,38 @@
+{
+  "name": "founderstack",
+  "version": "1.0.0",
+  "description": "One founder, a full team of agents. Skills for the engineering (plan, prove, ship, run unattended for hours) and the company around it (bills, morning brief, prod triage, machine health). Every skill ships evals. Never merges, never touches prod.",
+  "author": {
+    "name": "Zoltan Fodor",
+    "url": "https://github.com/ritmillio"
+  },
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "engineering",
+    "unattended",
+    "verification",
+    "founder",
+    "agents",
+    "evals"
+  ],
+  "skills": [
+    "./skills/agent-ops/memory-hygiene",
+    "./skills/agent-ops/model-router",
+    "./skills/agent-ops/notion-worklog",
+    "./skills/agent-ops/telegram-notify",
+    "./skills/company/collect-bills",
+    "./skills/company/morning-brief",
+    "./skills/company/vercel-triage",
+    "./skills/engineering/draft-plan",
+    "./skills/engineering/relay",
+    "./skills/engineering/safe-migration",
+    "./skills/engineering/shred-plan",
+    "./skills/machine/free-disk",
+    "./skills/machine/mac-compromise-check",
+    "./skills/machine/reclaim",
+    "./skills/machine/worktree-janitor"
+  ]
+}

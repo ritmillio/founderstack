@@ -12,7 +12,7 @@ repository and travels with it if you commit the directory.
 | Gemini CLI | `~/.gemini/skills/` | `.gemini/skills/` |
 | Cursor | `~/.cursor/skills/` | `.cursor/skills/` |
 
-`npx skills@latest add ritmillio/skills` writes to the project scope when run
+`npx skills@latest add ritmillio/founderstack` writes to the project scope when run
 inside a project and the user scope otherwise; force it with `-g/--global`.
 It symlinks by default so an update reaches every agent at once, and `--copy`
 makes standalone copies instead. It also maintains `.agents/skills/` as the real
@@ -28,8 +28,8 @@ Two routes, and it is worth understanding which one you are on:
 **Plugin marketplace** — versioned, updates with `/plugin update`:
 
 ```
-/plugin marketplace add ritmillio/skills
-/plugin install relay@ritmillio-tools
+/plugin marketplace add ritmillio/founderstack
+/plugin install relay@founderstack
 ```
 
 Skills installed this way are **namespaced**: the command is `/relay:relay`,

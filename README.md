@@ -13,18 +13,18 @@ The installer's whole job is putting the folder where each one looks.
 | Skill | What it does |
 |---|---|
 | [`relay`](skills/engineering/relay) | Unattended autonomous work for a stated duration — 4 hours or 24 — on its own worktree and draft PR. Each iteration is a fresh process handing a committed ledger to the next, so nothing lives long enough to suffer context rot. |
-| [`shred-plan`](skills/productivity/shred-plan) | The adversarial pass between "here's the plan" and "let's build it". Verifies every codebase claim in a plan with evidence, then hunts hidden dependencies, missing failure modes, scope leaks and unverifiable done-criteria — findings ranked by severity, no mercy. |
+| [`shred-plan`](skills/engineering/shred-plan) | The adversarial pass between "here's the plan" and "let's build it". Verifies every codebase claim in a plan with evidence, then hunts hidden dependencies, missing failure modes, scope leaks and unverifiable done-criteria — findings ranked by severity, no mercy. |
 | [`draft-plan`](skills/engineering/draft-plan) | Turn an investigation or conversation into a written plan doc: verified diagnosis, explicit in/out scope, workstreams with proofs of done, sequencing gates, open questions. The doc shape `shred-plan` was built to check — chain them. |
-| [`reclaim`](skills/engineering/reclaim) | Give a pinned dev machine back. Reads the System-vs-User CPU split first, because the process at the top of the list is usually a symptom — `launchservicesd` at 300% is churn, not work. Reaps stale build watchers, caps the test runner, and says plainly when only a reboot will do. |
-| [`telegram-notify`](skills/productivity/telegram-notify) | Telegram bot pings when an agent finishes a task (Stop hook), lands a commit, or a relay run starts/lands/halts/ends. Ships the sender script and walks through BotFather setup and hook wiring. |
-| [`notion-worklog`](skills/productivity/notion-worklog) | Nothing is done until Notion says so. Every task, QA pass, plan, ruling or incident becomes the right Notion record with a dated work-log entry — what, why, how it was verified, links, open questions. Databases come from a config in the host repo; agents without a Notion connector leave a `## Notion (pending)` entry instead of pretending. |
+| [`reclaim`](skills/machine/reclaim) | Give a pinned dev machine back. Reads the System-vs-User CPU split first, because the process at the top of the list is usually a symptom — `launchservicesd` at 300% is churn, not work. Reaps stale build watchers, caps the test runner, and says plainly when only a reboot will do. |
+| [`telegram-notify`](skills/agent-ops/telegram-notify) | Telegram bot pings when an agent finishes a task (Stop hook), lands a commit, or a relay run starts/lands/halts/ends. Ships the sender script and walks through BotFather setup and hook wiring. |
+| [`notion-worklog`](skills/agent-ops/notion-worklog) | Nothing is done until Notion says so. Every task, QA pass, plan, ruling or incident becomes the right Notion record with a dated work-log entry — what, why, how it was verified, links, open questions. Databases come from a config in the host repo; agents without a Notion connector leave a `## Notion (pending)` entry instead of pretending. |
 | [`safe-migration`](skills/engineering/safe-migration) | The boring, safe Drizzle migration ritual. Reads the repo's own rule first — a frozen journal means hand-written, idempotent SQL and never the generator — takes the next prefix from disk *and* the default branch, greps for silent `DROP`s, and lands schema and migration in one commit. |
-| [`vercel-triage`](skills/engineering/vercel-triage) | Turn a raw `vercel logs` dump into a triage: dedupe the CLI's repeated events, group by status and path, 5xx first. Read-only. |
-| [`morning-brief`](skills/productivity/morning-brief) | A founder's start of day in one screen: repos and PRs, an opt-in business block (inbox waiting on you, Stripe events, signups, prod errors, overdue tasks — from whatever tools are connected), news from your own feeds, and a Top 3 for today. |
-| [`worktree-janitor`](skills/engineering/worktree-janitor) | Eighty agent worktrees, one table: uncommitted, unpushed, PR state, the dev server holding a port, and a SAFE / ASK / KEEP verdict. Removes only what you pick, after re-checking each. |
-| [`memory-hygiene`](skills/productivity/memory-hygiene) | Claude Code loads only the head of `MEMORY.md`. Shows how much never reaches the agent — usually the rules — then archives finished project memories, shortens the index and moves rules to the top. Plus a session-wrap mode. |
-| [`free-disk`](skills/engineering/free-disk) | The disk does not fill with code, it fills with build output: one machine had 350 GB of `.next` caches across 45 worktrees. Deletes only what rebuilds itself, skips any checkout with a live dev server, and leaves deleting checkouts to `worktree-janitor`. |
-| [`model-router`](skills/productivity/model-router) | Pick the cheapest model and effort that can do the job before spending a token: a 3-call probe, a five-axis score, a one-line route card for the session and every subagent. Risk floors keep migrations and auth on the strong model; escalates one tier only after a failed check. |
+| [`vercel-triage`](skills/company/vercel-triage) | Turn a raw `vercel logs` dump into a triage: dedupe the CLI's repeated events, group by status and path, 5xx first. Read-only. |
+| [`morning-brief`](skills/company/morning-brief) | A founder's start of day in one screen: repos and PRs, an opt-in business block (inbox waiting on you, Stripe events, signups, prod errors, overdue tasks — from whatever tools are connected), news from your own feeds, and a Top 3 for today. |
+| [`worktree-janitor`](skills/machine/worktree-janitor) | Eighty agent worktrees, one table: uncommitted, unpushed, PR state, the dev server holding a port, and a SAFE / ASK / KEEP verdict. Removes only what you pick, after re-checking each. |
+| [`memory-hygiene`](skills/agent-ops/memory-hygiene) | Claude Code loads only the head of `MEMORY.md`. Shows how much never reaches the agent — usually the rules — then archives finished project memories, shortens the index and moves rules to the top. Plus a session-wrap mode. |
+| [`free-disk`](skills/machine/free-disk) | The disk does not fill with code, it fills with build output: one machine had 350 GB of `.next` caches across 45 worktrees. Deletes only what rebuilds itself, skips any checkout with a live dev server, and leaves deleting checkouts to `worktree-janitor`. |
+| [`model-router`](skills/agent-ops/model-router) | Pick the cheapest model and effort that can do the job before spending a token: a 3-call probe, a five-axis score, a one-line route card for the session and every subagent. Risk floors keep migrations and auth on the strong model; escalates one tier only after a failed check. |
 
 ## Install
 
@@ -34,13 +34,13 @@ symlinks each skill into every agent directory it detects, and records a
 lockfile so `update` works later:
 
 ```bash
-npx skills@latest add ritmillio/skills
+npx skills@latest add ritmillio/founderstack
 ```
 
 ```bash
-npx skills@latest add ritmillio/skills --list          # see what is here first
-npx skills@latest add ritmillio/skills --skill relay   # just one
-npx skills@latest add ritmillio/skills --all           # every skill, every agent
+npx skills@latest add ritmillio/founderstack --list          # see what is here first
+npx skills@latest add ritmillio/founderstack --skill relay   # just one
+npx skills@latest add ritmillio/founderstack --all           # every skill, every agent
 npx skills@latest list                                 # what you have installed
 npx skills@latest update                               # pull newer versions
 ```
@@ -49,8 +49,8 @@ Claude Code can also install through the plugin marketplace, which gives you
 versioned updates via `/plugin update`:
 
 ```
-/plugin marketplace add ritmillio/skills
-/plugin install relay@ritmillio-tools
+/plugin marketplace add ritmillio/founderstack
+/plugin install relay@founderstack
 ```
 
 **One catch, verified rather than assumed:** a marketplace-installed skill is
@@ -65,7 +65,7 @@ The marketplace also passes through [Matt Pocock's skills](https://github.com/ma
 remote-source entry — no vendored copy, nothing to drift:
 
 ```
-/plugin install mattpocock-skills@ritmillio-tools   # pulled from his repo, synced by /plugin update
+/plugin install mattpocock-skills@founderstack   # pulled from his repo, synced by /plugin update
 ```
 
 Skills CLI users get the same pack straight from the source instead:
