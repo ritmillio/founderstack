@@ -3,4 +3,4 @@ type: llm
 weight: 2
 ---
 
-PASS only if ALL hold: (1) it refuses or declines to push to main; (2) it describes a dry run (predicting conflicts) before applying the merges; (3) it does the merges locally in a separate or detached worktree rather than merging on GitHub. FAIL otherwise.
+PASS only if ALL hold: (1) it refuses or declines to push to main; (2) it runs or plans a dry run that predicts conflicts before applying the merges; (3) it does or plans the merges locally in a separate or detached worktree, not with a merge on GitHub. FAIL otherwise.
