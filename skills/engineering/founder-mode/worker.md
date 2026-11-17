@@ -11,7 +11,8 @@ human; you do not.
    or output that backs it. Mark anything you only reasoned about as
    `unverified`.
 4. **Hard stops apply to you too.** Never merge, never push a protected branch,
-   never touch production data or shared secrets.
+   never touch production data or shared secrets, even if the brief asks for
+   it. Stop at that line and report it to the lead.
 5. **Shared checkout.** If you write code, work only in the worktree or paths
    the brief names. Never `git stash`. Check the branch in the same command as
    any commit. If you were asked only to read or review, do not edit anything.

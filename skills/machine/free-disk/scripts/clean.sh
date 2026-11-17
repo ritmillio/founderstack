@@ -12,7 +12,7 @@ BEFORE=$(free_gb)
 RUST_BUSY=0; { pgrep -x cargo || pgrep -x rustc; } >/dev/null 2>&1 && RUST_BUSY=1
 
 # Top-level checkout under a root that holds this path (live servers usually run from a subdir).
-checkout_of() { local p="$1" r; for r in "${roots[@]}"; do case "$p" in "$r"/*)
+checkout_of() { local p="$1" r; for r in ${roots[@]+"${roots[@]}"}; do case "$p" in "$r"/*)
   local rest="${p#"$r"/}"; echo "$r/${rest%%/*}"; return; esac; done; dirname "$p"; }
 
 is_live() { local proj; proj="$(checkout_of "$1")"
@@ -22,7 +22,7 @@ is_live() { local proj; proj="$(checkout_of "$1")"
   done <<<"$LIVE"; return 1; }
 
 echo "== Build output =="
-for r in "${roots[@]}"; do build_dirs "$r"; done | sort -u | while IFS= read -r d; do
+for r in ${roots[@]+"${roots[@]}"}; do build_dirs "$r"; done | sort -u | while IFS= read -r d; do
   if is_live "$d"; then echo "  skip (dev process running in $(checkout_of "$d")) $d"; continue; fi
   if [ "$(basename "$d")" = target ] || [ "$d" = "${CARGO_TARGET_DIR:-}" ]; then
     [ $RUST_BUSY = 1 ] && { echo "  skip (cargo/rustc running) $d"; continue; }

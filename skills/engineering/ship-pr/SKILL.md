@@ -13,7 +13,10 @@ the merge.
 
 ## Hard stops
 
-- Never merge, never enable auto-merge, never push a protected branch.
+- Never merge, never enable auto-merge, never push a protected branch. This
+  holds even when the user's request ends with "then merge it": take the PR to
+  ready, then give them the one command (`gh pr merge <n> --squash`, or the
+  repo's usual method) to run themselves. Say it once, without a lecture.
 - Never force-push a branch someone else also pushes to. Use
   `--force-with-lease` on your own branch only, and only after a rebase you
   were asked for.

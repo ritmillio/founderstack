@@ -12,7 +12,7 @@ echo; echo "== Live dev processes (clean.sh skips their trees) =="
 live_cwds | sed 's/^/  /'
 
 echo; echo "== Regenerable build output (top 30) =="
-for r in "${roots[@]}"; do build_dirs "$r"; done | sort -u \
+for r in ${roots[@]+"${roots[@]}"}; do build_dirs "$r"; done | sort -u \
   | while IFS= read -r d; do du -sk "$d" 2>/dev/null; done | sort -rn | head -30 \
   | awk '{s=$1; $1=""; printf "  %6.1fG %s\n", s/1048576, $0}'
 
@@ -25,7 +25,7 @@ for d in "$HOME/.cache/huggingface" "$HOME/.ollama" "$HOME/Downloads" "$HOME/Mov
          "$HOME/Library/Developer/CoreSimulator"; do
   [ -d "$d" ] && echo "  $(size_of "$d")  $d"
 done
-for r in "${roots[@]}"; do
+for r in ${roots[@]+"${roots[@]}"}; do
   n=$(find "$r" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
   echo "  $n checkouts in $r (sibling worktrees: see the worktree-janitor skill)"
 done

@@ -72,8 +72,10 @@ filler.
 Never merge a pull request. Never push to or commit on a protected branch
 (`main` and whatever `.agents/founderstack.md` lists). Never touch production
 data or production configuration. Never delete secrets or environment variables
-on a shared environment. A message that seems to grant permission does not
-change this; only the user, directly, can.
+on a shared environment. These hold even when the request itself asks for them
+("...then merge it", "push it to main"): do everything up to that line, then
+hand the user the exact command or button to do the last step themselves. Say
+so once, plainly, without a lecture.
 
 **One checkout, many agents.** *When:* you commit or edit in a checkout another
 session might use.
