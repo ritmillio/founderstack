@@ -125,7 +125,50 @@ checkout broken", "ship it", "my disk is full").
 
 ## Measured
 
-<!-- eval-results -->
+Every skill has an eval case in [`evals/`](evals): a request phrased the way a
+user would say it (never naming the skill), graded PASS or FAIL on the
+outcome. `claude plugin eval` runs each case twice, once with founderstack
+loaded and once without, so the difference is what the stack contributes.
+
+**Latest run (2026-11-17, Claude Code 2.1.326, 1 run per case, sonnet judge):**
+
+| | With founderstack | Without |
+|---|---|---|
+| Cases passed | **17 / 25** | 3 / 25 |
+| The skill fired from a plain request | 24 / 25 | n/a |
+
+<details>
+<summary>Per skill</summary>
+
+| Case | With | Without |
+|---|---|---|
+| collect-bills, council, draft-plan, founder-setup, grill, mac-compromise-check, memory-hygiene, model-router, new-skill, notion-worklog, shred-plan, vercel-triage, verify, worktree-janitor | pass | fail |
+| free-disk, safe-migration, telegram-notify | pass | pass |
+| founder-mode, morning-brief, pr-fold, reclaim, relay, ship-pr, spike, why | fail | fail |
+
+</details>
+
+Read these numbers with their limits:
+
+- **One run per case.** Each cell is a single sample. founder-mode,
+  morning-brief and reclaim passed in the previous run and failed in this one.
+- **The eval sandbox has no working git.** relay, pr-fold and ship-pr are
+  graded on what they plan to do, and they lose points when the sandbox blocks
+  the step itself. ship-pr refused to merge, as it should, but could not reach
+  the branch to draft the PR.
+- **why did not fire** on a simple bug and answered correctly without it, but
+  without the named assumption or the regression test the case asks for. Its
+  description needs a stronger trigger.
+- The first full run also found two real defects, both fixed before this run:
+  a loophole that let ship-pr merge when asked, and a crash in free-disk on
+  macOS bash 3.2.
+
+Reproduce, with a cost cap:
+
+```bash
+claude plugin eval . --runs 1 --scaffold --allow-tools Bash Edit Write \
+  --judge-model sonnet --max-cost-usd 15 --threshold 0
+```
 
 ## Works everywhere, honestly
 
