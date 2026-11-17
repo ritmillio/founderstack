@@ -1,7 +1,6 @@
 ---
 name: founder-setup
-description: Set up founderstack for this repo: detect the gate commands, protected branches, production guards, dev URL, where work is logged and who sits on the review council, show the draft, and write .agents/founderstack.md once you approve. Run once per repo, or again when the setup changes.
-disable-model-invocation: true
+description: Set up founderstack for this repo: detect the gate commands, protected branches, production guards, dev URL, where work is logged and who sits on the review council, show the draft, and write .agents/founderstack.md once you approve. Use when the user says "set up founderstack" or "configure founderstack for this repo", or a founderstack skill reports that .agents/founderstack.md is missing.
 ---
 
 # /founder-setup: teach the stack this repo, once
