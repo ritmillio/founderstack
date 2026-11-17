@@ -1,0 +1,27 @@
+export default {
+  id: "01-founderstack", title: "founderstack: one entry, playbooks, skills, proof", width: 1240, height: 600,
+  nodes: [
+    { id: "you", x: 30, y: 250, w: 150, h: 70, label: "You", sub: "a task", tone: "ink", bold: true },
+    { id: "mode", x: 240, y: 240, w: 200, h: 90, label: "founder-mode", sub: "picks a playbook", tone: "core", bold: true },
+    { id: "cfg", x: 240, y: 70, w: 200, h: 80, label: ".agents/founderstack.md", sub: "gates, guards, seats", tone: "paper" },
+    { id: "pri", x: 240, y: 420, w: 200, h: 80, label: "principles.md", sub: "name it + decision", tone: "paper" },
+    { id: "pb", x: 500, y: 240, w: 180, h: 90, label: "Playbook", sub: "steps + Reply contract", tone: "org" },
+    { id: "eng", x: 740, y: 55, w: 220, h: 90, label: "Engineering", sub: "plan, why, verify, ship-pr", tone: "ai" },
+    { id: "run", x: 740, y: 170, w: 220, h: 80, label: "Unattended", sub: "relay, notify, worklog", tone: "ai" },
+    { id: "co", x: 740, y: 290, w: 220, h: 80, label: "Company", sub: "brief, bills, prod triage", tone: "ai" },
+    { id: "mac", x: 740, y: 410, w: 220, h: 80, label: "Machine", sub: "reclaim, disk, worktrees", tone: "ai" },
+    { id: "proof", x: 1020, y: 200, w: 190, h: 110, label: "Evidence", sub: "pass/fail + NOT checked", tone: "exists", bold: true },
+    { id: "pr", x: 1020, y: 360, w: 190, h: 80, label: "Draft PR", sub: "you merge", tone: "gate" },
+  ],
+  edges: [
+    { from: "you", to: "mode" },
+    { from: "cfg", to: "mode", label: "reads", dx: 30 },
+    { from: "pri", to: "mode", label: "applies", dx: 34 },
+    { from: "mode", to: "pb" },
+    { from: "pb", to: "eng" }, { from: "pb", to: "run" }, { from: "pb", to: "co" }, { from: "pb", to: "mac" },
+    { from: "eng", to: "proof" }, { from: "run", to: "proof" }, { from: "co", to: "proof" }, { from: "mac", to: "proof" },
+    { from: "proof", to: "pr" },
+  ],
+  frames: [{ x: 720, y: 0, w: 260, h: 510, label: "25 skills" }],
+  texts: [{ x: 30, y: 560, text: "Every skill ships evals (with vs without the stack). CI lints every skill. Never merges, never touches prod.", size: 15 }],
+};
