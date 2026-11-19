@@ -12,7 +12,7 @@ repository and travels with it if you commit the directory.
 | Gemini CLI | `~/.gemini/skills/` | `.gemini/skills/` |
 | Cursor | `~/.cursor/skills/` | `.cursor/skills/` |
 
-`npx skills@latest add ritmillio/skills` writes to the project scope when run
+`npx skills@latest add ritmillio/founderstack` writes to the project scope when run
 inside a project and the user scope otherwise; force it with `-g/--global`.
 It symlinks by default so an update reaches every agent at once, and `--copy`
 makes standalone copies instead. It also maintains `.agents/skills/` as the real
@@ -28,8 +28,9 @@ Two routes, and it is worth understanding which one you are on:
 **Plugin marketplace** — versioned, updates with `/plugin update`:
 
 ```
-/plugin marketplace add ritmillio/skills
-/plugin install relay@ritmillio-tools
+/plugin marketplace add ritmillio/founderstack
+/plugin install founderstack@founderstack     # the whole stack
+/plugin install relay@founderstack            # or one skill
 ```
 
 Skills installed this way are **namespaced**: the command is `/relay:relay`,
@@ -55,6 +56,22 @@ claude plugin marketplace add /absolute/path/to/skills
 A marketplace name can only be registered once, so the local registration and
 the GitHub one are mutually exclusive.
 
+## Companion pack: Matt Pocock's skills
+
+Our marketplace passes through [Matt Pocock's skills](https://github.com/mattpocock/skills)
+(`grill-me`, `tdd`, `to-spec`, `to-tickets`, `implement`, `code-review`, ...) as a
+remote entry: nothing is copied here, and `/plugin update` pulls from his repo.
+
+```
+/plugin install mattpocock-skills@founderstack
+```
+
+With the skills CLI, install it from the source instead:
+
+```bash
+npx skills@latest add mattpocock/skills
+```
+
 ## Verifying
 
 ```bash
@@ -71,4 +88,21 @@ frontmatter `description`.
 ```bash
 npx skills@latest remove relay
 npx skills@latest remove --all
+```
+
+## Upgrading from `ritmillio/skills`
+
+The marketplace was renamed from `ritmillio-tools` to `founderstack`:
+
+```
+/plugin marketplace remove ritmillio-tools
+/plugin marketplace add ritmillio/founderstack
+```
+
+Skills also moved folders in 1.0.0. If you symlinked skills from a local
+checkout, repair the links after pulling:
+
+```bash
+scripts/link-skills.sh            # dry run: shows every link it would add or re-point
+scripts/link-skills.sh --apply
 ```

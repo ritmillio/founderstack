@@ -1,0 +1,12 @@
+{
+  "name": "founder-mode",
+  "description": "The founderstack entry point. Reads the task, picks a playbook (bug fix, feature, plan, unattended run, shipping, release fold, migration, prod triage, review, morning, books, machine, new skill, session wrap), and runs the skills that playbook names, ending in evidence and a list of what was not checked. Use when the user says \"founder mode\", \"do this properly\", \"take this end to end\", \"full rigor\", or asks which founderstack skill fits (\"founder mode help\").",
+  "version": "0.1.0",
+  "author": {
+    "name": "Zoltan Fodor",
+    "url": "https://github.com/ritmillio"
+  },
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
+  "license": "MIT"
+}

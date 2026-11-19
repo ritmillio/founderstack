@@ -1,0 +1,12 @@
+{
+  "name": "ship-pr",
+  "description": "Take a finished branch to \"ready for you to merge\": file a PR whose title says why it matters and whose body leads with the problem, wait on CI and review bots with an event-driven waiter, fix real findings, answer the rest, and stop when the latest commit is green. Never merges. Use when the user says \"ship it\", \"open a PR\", \"file a PR\", \"babysit the PR\", or \"get this ready to merge\".",
+  "version": "0.1.0",
+  "author": {
+    "name": "Zoltan Fodor",
+    "url": "https://github.com/ritmillio"
+  },
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
+  "license": "MIT"
+}

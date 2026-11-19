@@ -1,18 +1,25 @@
 {
-  "name": "ritmillio-tools",
+  "name": "founderstack",
   "owner": {
     "name": "Zoltan Fodor",
     "url": "https://github.com/ritmillio"
   },
-  "description": "Cross-agent skills for long-running and unattended engineering work. SKILL.md format, works in Claude Code, Codex, Gemini CLI, Cursor and anything else that reads the open standard.",
+  "description": "founderstack: one founder, a full team of agents. Install the whole stack (founderstack) or one skill at a time. SKILL.md open standard: Claude Code, Codex, Cursor, Gemini CLI.",
   "plugins": [
+    {
+      "name": "founderstack",
+      "source": "./",
+      "description": "The whole stack in one install: founder-mode, the playbooks, every skill.",
+      "version": "1.0.0",
+      "category": "workflow"
+    },
     {
       "name": "mattpocock-skills",
       "source": {
         "source": "github",
         "repo": "mattpocock/skills"
       },
-      "description": "Passthrough to Matt Pocock's skill pack (grill-me, tdd, to-spec, to-tickets, implement, code-review and friends), installed straight from his repo and kept in sync by /plugin update. Not our code — see https://github.com/mattpocock/skills."
+      "description": "Passthrough to Matt Pocock's skill pack (grill-me, tdd, to-spec, to-tickets, implement, code-review and friends), installed straight from his repo and kept in sync by /plugin update. Not our code \u2014 see https://github.com/mattpocock/skills."
     },
     {
       "name": "relay",
@@ -30,26 +37,26 @@
     },
     {
       "name": "shred-plan",
-      "source": "./skills/productivity/shred-plan",
+      "source": "./skills/engineering/shred-plan",
       "description": "Tear a written plan apart to find gaps before implementing it. Use when the user has a plan (a docs/*-plan.md file or a plan in the conversation) and wants it stress-tested, red-teamed, or 'shredded'. Verifies every codebase claim with evidence, hunts unverified assumptions, hidden dependencies, missing failure modes, scope leaks, and unverifiable done-criteria, then reports findings ranked by severity.",
       "version": "0.1.0"
     },
     {
       "name": "draft-plan",
       "source": "./skills/engineering/draft-plan",
-      "description": "Turn an investigation or conversation into a written plan doc with diagnosis, explicit scope, workstreams with verifiable proofs, sequencing gates, and open questions. Use when the user wants a plan written down before building — then chain into shred-plan to stress-test it.",
+      "description": "Turn an investigation or conversation into a written plan doc with diagnosis, explicit scope, workstreams with verifiable proofs, sequencing gates, and open questions. Use when the user wants a plan written down before building \u2014 then chain into shred-plan to stress-test it.",
       "version": "0.1.0"
     },
     {
       "name": "telegram-notify",
-      "source": "./skills/productivity/telegram-notify",
+      "source": "./skills/agent-ops/telegram-notify",
       "description": "Telegram bot notifications for agent events: turn finished, turn failed, commits, pushes, blocked-on-permission, and relay run events. Ships the sender script and walks through BotFather setup, chat id, config, hook wiring and a --doctor check.",
       "version": "0.2.0"
     },
     {
       "name": "reclaim",
-      "source": "./skills/engineering/reclaim",
-      "description": "Diagnose and fix a dev machine pinned at high CPU, high RAM or high load average — read the System-vs-User split first, reap stale build watchers, cap test-runner concurrency, and tell the user when only a reboot will do. Use when the user says the CPU/RAM/fan/load is out of control, shows a system-monitor screenshot, asks to free up memory, or asks why the machine is slow while agents are running.",
+      "source": "./skills/machine/reclaim",
+      "description": "Diagnose and fix a dev machine pinned at high CPU, high RAM or high load average \u2014 read the System-vs-User split first, reap stale build watchers, cap test-runner concurrency, and tell the user when only a reboot will do. Use when the user says the CPU/RAM/fan/load is out of control, shows a system-monitor screenshot, asks to free up memory, or asks why the machine is slow while agents are running.",
       "version": "0.1.0",
       "category": "workflow",
       "tags": [
@@ -63,13 +70,13 @@
     },
     {
       "name": "mac-compromise-check",
-      "source": "./skills/security/mac-compromise-check",
+      "source": "./skills/machine/mac-compromise-check",
       "description": "Run a read-only compromise triage on a macOS machine: accounts, remote access, listening ports, launchd/cron persistence, browser extensions, MDM/config profiles, and system hardening (FileVault/SIP/Gatekeeper). Trace a specific email or account across the machine. Use when the user says 'is my Mac hacked', 'check if my Mac is compromised', 'did someone access my machine', shows a suspicious sign-in, or wants a security audit of their laptop.",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "collect-bills",
-      "source": "./skills/bookkeeping/collect-bills",
+      "source": "./skills/company/collect-bills",
       "description": "Sweep mailboxes for vendor invoices billed to the company, drop anything without the company tax number, diff against what is already archived, and download only the delta. Use when the user says collect the bills, gather receipts, get the invoices, or do the bookkeeping.",
       "version": "0.1.0"
     },
@@ -81,32 +88,104 @@
     },
     {
       "name": "vercel-triage",
-      "source": "./skills/engineering/vercel-triage",
+      "source": "./skills/company/vercel-triage",
       "description": "Pull, dedupe, and triage Vercel production logs down to genuine failures, working around the CLI's traps (events duplicated many times, short --until windows, ~24h retention). Use when the user says 'check the vercel logs', 'is prod erroring', 'triage production', 'why are users seeing errors', or wants a production health read.",
       "version": "0.1.0"
     },
     {
       "name": "morning-brief",
-      "source": "./skills/productivity/morning-brief",
+      "source": "./skills/company/morning-brief",
       "description": "Produce a one-screen founder morning brief: INTERNAL (git activity, open PRs, relay ledgers across the user's repos), BUSINESS (opt-in: inbox needing a reply, Stripe revenue events, PostHog signups, production errors, due and overdue tasks, read through whatever tools are connected), EXTERNAL (news from sources in a config file), ending in a Top 3 for today; optionally delivered to Telegram. Use when the user says 'morning brief', 'daily digest', 'founder brief', 'catch me up', 'what happened overnight', 'what needs me today', 'get the news', or wants a start-of-day summary without browsing.",
       "version": "0.2.0"
     },
     {
       "name": "worktree-janitor",
-      "source": "./skills/engineering/worktree-janitor",
-      "description": "Census and clean up a repo's git worktrees: one table with branch, uncommitted and unpushed work, last commit age, PR state (merged/closed/open/draft/none), any dev server running inside it, and a SAFE / ASK / KEEP verdict — then remove only the ones the user picks, after re-checking each. Use when the user says 'clean up worktrees', 'too many worktrees', 'which worktrees can I delete', 'prune worktrees', 'what's running on port 3xxx', 'free disk', or has dozens of sibling <repo>-* checkouts.",
+      "source": "./skills/machine/worktree-janitor",
+      "description": "Census and clean up a repo's git worktrees: one table with branch, uncommitted and unpushed work, last commit age, PR state (merged/closed/open/draft/none), any dev server running inside it, and a SAFE / ASK / KEEP verdict \u2014 then remove only the ones the user picks, after re-checking each. Use when the user says 'clean up worktrees', 'too many worktrees', 'which worktrees can I delete', 'prune worktrees', 'what's running on port 3xxx', 'free disk', or has dozens of sibling <repo>-* checkouts.",
       "version": "0.1.0"
     },
     {
       "name": "memory-hygiene",
-      "source": "./skills/productivity/memory-hygiene",
+      "source": "./skills/agent-ops/memory-hygiene",
       "description": "Audit and clean a Claude Code auto-memory directory so the index actually loads: count how much of MEMORY.md reaches the agent at startup (200 lines / ~25k chars), find overlong index lines, broken and orphan entries, near-duplicates, frontmatter errors, and feedback rules that sit below the cut, then archive finished project memories and shorten the index after the user approves. Also a session-wrap mode that files one topic memory plus one short index line. Use when the user says 'clean up memory', 'MEMORY.md is too long', 'memory got truncated', 'tidy memories', 'wrap up the session', 'save what we learned', or when a startup warning says the memory index was cut off.",
       "version": "0.1.0"
     },
     {
       "name": "free-disk",
-      "source": "./skills/engineering/free-disk",
+      "source": "./skills/machine/free-disk",
       "description": "Free disk space on a dev machine without losing work: scan what is eating the SSD, delete only regenerable build output (.next, .turbo, Rust target) and package caches, skip any checkout with a live dev server, then hand worktree removal to worktree-janitor. Use when the user says 'my mac is full', 'disk full', 'free up space', or a build fails with ENOSPC.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "notion-worklog",
+      "source": "./skills/agent-ops/notion-worklog",
+      "description": "Record every piece of agent work in Notion before calling it done: code, fixes, QA passes (finding rows + summary page), research and plans (doc row linking the repo file), rulings, incidents and long runs, each with a dated work-log entry (did / why / verified / links / open). Targets come from a config file in the host repo. Use at the end of any task that changed or found something, or when the user says 'log this', 'document this in Notion', 'record what we did'.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "model-router",
+      "source": "./skills/agent-ops/model-router",
+      "description": "Pick the cheapest model and effort that can do a task well, BEFORE doing it or spawning agents. Cheap probe (max 3 tool calls), five-axis score, a one-line route card (model + effort + delegate or not) for the main session, each subagent and each workflow agent. Use at the start of any non-trivial task, before spawning subagents, or when the user says 'which model', 'what effort', 'save tokens', 'don't burn tokens'.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "founder-mode",
+      "source": "./skills/engineering/founder-mode",
+      "description": "The founderstack entry point. Reads the task, picks a playbook (bug fix, feature, plan, unattended run, shipping, release fold, migration, prod triage, review, morning, books, machine, new skill, session wrap), and runs the skills that playbook names, ending in evidence and a list of what was not checked. Use when the user says \"founder mode\", \"do this properly\", \"take this end to end\", \"full rigor\", or asks which founderstack skill fits (\"founder mode help\").",
+      "version": "0.1.0"
+    },
+    {
+      "name": "new-skill",
+      "source": "./skills/engineering/new-skill",
+      "description": "Turn a workflow you keep re-explaining into a skill an agent can follow cold: a trigger-first description, when not to use it, numbered steps with exact commands, the traps, and a first eval case that checks it fires from a natural prompt and improves the outcome. Use when the user says \"make this a skill\", \"codify this\", \"create a skill\", or the same instructions have been given twice.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "founder-setup",
+      "source": "./skills/engineering/founder-setup",
+      "description": "Set up founderstack for this repo: detect the gate commands, protected branches, production guards, dev URL, where work is logged and who sits on the review council, show the draft, and write .agents/founderstack.md once you approve. Use when the user says \"set up founderstack\" or \"configure founderstack for this repo\", or a founderstack skill reports that .agents/founderstack.md is missing.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "verify",
+      "source": "./skills/engineering/verify",
+      "description": "Prove a finished change works before calling it done: run the repo gates, read the diff as a hostile reviewer, write the missing edge-case tests, drive the real app, and loop until a full pass finds nothing new. Ends in SHIP, SHIP WITH NOTES or NOT READY plus what was not checked. Use when the user says \"verify\", \"make sure this works\", \"is this ready\", or before opening or un-drafting a PR.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "why",
+      "source": "./skills/engineering/why",
+      "description": "Find the root cause of a bug, not a plausible cause: reproduce, get one command that fails every time, minimise, test one hypothesis at a time, name the assumption that turned out false, then fix at the cause with a regression guard. Use when something is broken, throws, returns the wrong thing, regressed (\"this used to work\"), or the user asks \"why did X happen\".",
+      "version": "0.1.0"
+    },
+    {
+      "name": "grill",
+      "source": "./skills/engineering/grill",
+      "description": "Pressure-test a plan or design before any code: read it in full, then ask the uncomfortable questions one at a time, each with a recommended answer, until every decision is resolved or parked as an open question. Use when the user says \"grill this\", \"what do you think of this plan\", \"is this a good idea\", or before work that touches data, auth, prompts, several surfaces or many files.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "spike",
+      "source": "./skills/engineering/spike",
+      "description": "Build a throwaway prototype that answers one design or behaviour question inside a time budget, show the variants side by side, get the user to pick, then delete it. Use when the user says \"let's try\", \"what if we\", \"show me two versions\", \"spike this\", or a choice is unclear and a static mockup would not settle it.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "pr-fold",
+      "source": "./skills/engineering/pr-fold",
+      "description": "Fold several open PR branches into an integration or release branch: dry run for conflicts and migration prefix collisions, merge in a detached worktree, resolve with both sides' intent, gate what the fold touched, put cross-PR breakage in one seams commit, push the integration branch. Never a protected branch, never a GitHub merge. Use when the user says \"fold #N into ...\", \"put these PRs on the release branch\", or \"one release PR with all open PRs\".",
+      "version": "0.1.0"
+    },
+    {
+      "name": "council",
+      "source": "./skills/engineering/council",
+      "description": "Get a change reviewed by several models from different vendors, in rounds, until they agree or the budget ends: stable finding ids, blocker/should/nit judged against the stated intent, fixes between rounds, a score table in the PR body. Without other vendors it runs fresh reviewers with different lenses and says so. Use when the user says \"council\", \"second opinion\", \"cross-review this\", or before shipping a risky change (data, money, auth, security, public API).",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ship-pr",
+      "source": "./skills/engineering/ship-pr",
+      "description": "Take a finished branch to \"ready for you to merge\": file a PR whose title says why it matters and whose body leads with the problem, wait on CI and review bots with an event-driven waiter, fix real findings, answer the rest, and stop when the latest commit is green. Never merges. Use when the user says \"ship it\", \"open a PR\", \"file a PR\", \"babysit the PR\", or \"get this ready to merge\".",
       "version": "0.1.0"
     }
   ]

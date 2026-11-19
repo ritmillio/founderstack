@@ -1,0 +1,12 @@
+{
+  "name": "founder-setup",
+  "description": "Set up founderstack for this repo: detect the gate commands, protected branches, production guards, dev URL, where work is logged and who sits on the review council, show the draft, and write .agents/founderstack.md once you approve. Use when the user says \"set up founderstack\" or \"configure founderstack for this repo\", or a founderstack skill reports that .agents/founderstack.md is missing.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Zoltan Fodor",
+    "url": "https://github.com/ritmillio"
+  },
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
+  "license": "MIT"
+}

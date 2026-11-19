@@ -1,0 +1,12 @@
+{
+  "name": "pr-fold",
+  "description": "Fold several open PR branches into an integration or release branch: dry run for conflicts and migration prefix collisions, merge in a detached worktree, resolve with both sides' intent, gate what the fold touched, put cross-PR breakage in one seams commit, push the integration branch. Never a protected branch, never a GitHub merge. Use when the user says \"fold #N into ...\", \"put these PRs on the release branch\", or \"one release PR with all open PRs\".",
+  "version": "0.1.0",
+  "author": {
+    "name": "Zoltan Fodor",
+    "url": "https://github.com/ritmillio"
+  },
+  "homepage": "https://github.com/ritmillio/founderstack",
+  "repository": "https://github.com/ritmillio/founderstack",
+  "license": "MIT"
+}
